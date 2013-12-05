@@ -1,0 +1,12 @@
+archive
+*~
+*.pdf
+*.tar.gz
+*.aux
+*.glo
+*.hd
+*.ids
+*.log
+*.out
+*.idx
+tmp
