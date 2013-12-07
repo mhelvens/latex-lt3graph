@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \iffalse %%%%
 %                                                                              %
-%  Copyright (c) 2013 - Michiel Helvensteijn   (www.mhelvens.net)              %
+%  Copyright (c) 2013 - Michiel Helvensteijn - www.mhelvens.net                %
 %                                                                              %
 %  https://github.com/mhelvens/latex-lt3graph                                  %
 %                                                                              %
@@ -21,8 +21,9 @@
 
 \documentclass[a4paper]{lt3graph-packagedoc}
 
-\usepackage {amssymb}
-\usepackage {tikz}
+\usepackage       {amssymb}
+\usepackage       {tikz}
+
 \usetikzlibrary {matrix}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,9 +93,9 @@ This package provides a data-structure for use in the \LaTeX3 programming
 environment. It allows you to represent a \emph{directed graph}, which
 contains \emph{vertices} (nodes), and \emph{edges} (arrows) to
 connect them.\footnote
-	{ Mathematically speaking, a directed graph is a tuple \( (V, E) \)
-	  with a set of vertices \( V \) and a set of edges \( E \subseteq V \times V \)
-      connecting those vertices.}
+	{ Mathematically speaking, a directed graph is a tuple
+	  \( (V, E) \) with a set of vertices \( V \) and a set of edges
+	  \( E \subseteq V \times V \) connecting those vertices. }
 One such a graph is defined below:
 
 \begin{latex-example}
@@ -239,7 +240,7 @@ The first generates the transitive closure of a graph:
 \begin{latex-example-show}
 \ExplSyntaxOn \centering
     \graph_display_table:N \l_my_graph
-    \( \ \rightsquigarrow\ \)
+    \(\ \ \rightsquigarrow\ \ \)
     \graph_display_table:Nn \l_closed_graph
         { row_keys = false, vertex_vals = false }
 \ExplSyntaxOff
@@ -265,7 +266,7 @@ The second transformation function generates the transitive reduction:
 \begin{latex-example-show}
 \ExplSyntaxOn \centering
     \graph_display_table:N \l_my_graph
-    \( \ \rightsquigarrow\ \)
+    \(\ \ \rightsquigarrow\ \ \)
     \graph_display_table:Nn \l_reduced_graph
         { row_keys = false, vertex_vals = false }
 \ExplSyntaxOff

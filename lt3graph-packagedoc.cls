@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                              %
-%  Copyright (C) 2013 by Michiel Helvensteijn - www.mhelvens.net               %
+%  Copyright (c) 2013 - Michiel Helvensteijn - www.mhelvens.net                %
 %                                                                              %
 %  https://github.com/mhelvens/latex-lt3graph                                  %
 %                                                                              %
@@ -29,15 +29,14 @@
 % Importing The Main Package                                                   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\RequirePackage{\packagename}
-
-\RequirePackage[display]{\packagename}
+\RequirePackage{\packagename}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Importing Other Packages                                                     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{etoolbox}
+\RequirePackage[table]{xcolor}
 \RequirePackage[xcolor]{mdframed}
 \RequirePackage{marginnote}
 \RequirePackage{listings}

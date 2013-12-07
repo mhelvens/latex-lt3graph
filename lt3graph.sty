@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \iffalse %%%%
 %                                                                              %
-%  Copyright (c) 2013 - Michiel Helvensteijn   (www.mhelvens.net)              %
+%  Copyright (c) 2013 - Michiel Helvensteijn - www.mhelvens.net                %
 %                                                                              %
 %  https://github.com/mhelvens/latex-lt3graph                                  %
 %                                                                              %
@@ -19,7 +19,7 @@
 %                                                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \fi %%%%
 
-% \CheckSum{841}
+% \CheckSum{0}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -75,38 +75,6 @@
 \RequirePackage{l3prop}
 \RequirePackage{xparse}
 \RequirePackage{withargs}
-%    \end{macrocode}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  We now test whether the |display| option was used:
-%
-%    \begin{macrocode}
-\bool_new:N       \__graph_format_bool
-\bool_set_false:N \__graph_format_bool
-
-\keys_define:nn {lt3graph}
-  { display .code:n = \bool_set_true:N \__graph_format_bool }
-
-\ProcessKeysPackageOptions {lt3graph}
-%    \end{macrocode}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  If the |display| option was used, load additional packages:
-%
-%    \begin{macrocode}
-\bool_if:NT \__graph_format_bool {
-  \RequirePackage[table]{xcolor}
-}
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1306,18 +1274,20 @@
   %
   \prop_clear:N \l__graph_source_vertices
   \graph_map_vertices_inline:Nn #1 {
-    \prop_put:Nnf \l__graph_tmp_indegrees_int {##1}
-      {\graph_get_indegree:Nn #1 {##1}}
-    \int_compare:nT {\graph_get_indegree:Nn #1 {##1} = 0}
-      { \prop_put:Nnn \l__graph_source_vertices {##1} {} }
-  }
+    \prop_put:Nnf \l__graph_tmp_indeg_int {##1}
+        { \graph_get_indegree:Nn #1 {##1} }
+    \int_compare:nT {\graph_get_indegree:Nn #1 {##1} = 0} {
+      \prop_put:Nnn \l__graph_source_vertices {##1} {} 
+  } }
   
   %%% Main loop
   %
   \bool_until_do:nn {\prop_if_empty_p:N \l__graph_source_vertices} {
     %%% Choose any vertex (\l__graph_topo_key_tl, \l__graph_topo_value_tl)
     %
-    \__graph_prop_any_key_pop:NN \l__graph_source_vertices \l__graph_topo_key_tl
+    \__graph_prop_any_key_pop:NN
+        \l__graph_source_vertices
+        \l__graph_topo_key_tl
     \graph_get_vertex:NVNT #1 \l__graph_topo_key_tl \l__graph_topo_val_tl {
       %%% Run the mapping funtion on the key and value from that vertex
       %
@@ -1328,29 +1298,25 @@
       %%% and add all now-empty vertices to \l__graph_source_vertices
       %
       \graph_map_outgoing_edges_inline:NVn #1 \l__graph_topo_key_tl {
-        \prop_put:Nnf \l__graph_tmp_indegrees_int {##2}
-          {\int_eval:n {\prop_get:Nn \l__graph_tmp_indegrees_int {##2} - 1}}
-        \int_compare:nT {\prop_get:Nn \l__graph_tmp_indegrees_int {##2} = 0} {
+        \prop_put:Nnf \l__graph_tmp_indeg_int {##2}
+          {\int_eval:n {\prop_get:Nn \l__graph_tmp_indeg_int {##2} - 1}}
+        \int_compare:nT {\prop_get:Nn \l__graph_tmp_indeg_int {##2} = 0} {
           \prop_put:Nnn \l__graph_source_vertices {##2} {}
-        }
-      }
-    }
-  }
-}
+} } } } }
 \cs_new_protected:Nn \__graph_prop_any_key_pop:NN {
   \prop_map_inline:Nn #1 {
     \tl_set:Nn #2 {##1}
     \prop_remove:Nn #1 {##1}
-    \prop_map_break:n {\use_none:n}
+    \prop_map_break:n {\use_none:nnn}
   }
-  { \tl_set:Nn #2 {\q_no_value} }
+  \tl_set:Nn #2 {\q_no_value} % TODO: test
 }
 \cs_generate_variant:Nn \withargs:nnn                        {VVn}
 \cs_generate_variant:Nn \graph_map_outgoing_edges_inline:Nnn {NVn}
 \cs_generate_variant:Nn \prop_put:Nnn                        {Nnf}
 \cs_generate_variant:Nn \graph_get_vertex:NnNT               {NVNT}
 \prop_new:N \l__graph_source_vertices
-\prop_new:N \l__graph_tmp_indegrees_int
+\prop_new:N \l__graph_tmp_indeg_int
 \tl_new:N \l__graph_topo_key_tl
 \tl_new:N \l__graph_topo_val_tl
 %    \end{macrocode}
@@ -1367,8 +1333,9 @@
 %  Assumes that the graph is acyclic (for now).
 %
 %    \begin{macrocode}
-\cs_new:Nn \graph_map_topological_order_function:NN
-  { \graph_map_topological_order_tokens:Nn #1 {#2} }
+\cs_new:Nn \graph_map_topological_order_function:NN {
+  \graph_map_topological_order_tokens:Nn #1 {#2}
+}
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1387,8 +1354,7 @@
   \withargs (c) [\uniquecsname] [#2] {
     \cs_set:Npn ##1 ####1####2 {##2}
     \graph_map_topological_order_function:NN #1 ##1
-  }
-}
+} }
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1406,49 +1372,49 @@
 %  Set graph |#1| to the transitive closure of graph |#2|.
 %
 %    \begin{macrocode}
-\cs_new_protected:Nn \graph_set_transitive_closure:NN
-  { \__graph_set_transitive_closure:NNNnn #1 #2 \use_none:nnn {} { } }
-\cs_new_protected:Nn \graph_gset_transitive_closure:NN
-  { \__graph_set_transitive_closure:NNNnn #1 #2 \use_none:nnn {} {g} }
-\cs_new_protected:Nn \graph_set_transitive_closure:NNNn
-  { \__graph_set_transitive_closure:NNNnn #1 #2 #3 {#4} { } }
-\cs_new_protected:Nn \graph_gset_transitive_closure:NNNn
-  { \__graph_set_transitive_closure:NNNnn #1 #2 #3 {#4} {g} }
-\cs_new_protected:Nn \__graph_set_transitive_closure:NNNnn
+\cs_new_protected:Nn \graph_set_transitive_closure:NN {
+  \__graph_set_transitive_closure:NNNnn #1 #2 \use_none:nnn {} { }
+}
+\cs_new_protected:Nn \graph_gset_transitive_closure:NN {
+  \__graph_set_transitive_closure:NNNnn #1 #2 \use_none:nnn {} {g}
+}
+\cs_new_protected:Nn \graph_set_transitive_closure:NNNn {
+  \__graph_set_transitive_closure:NNNnn #1 #2 #3 {#4} { }
+}
+\cs_new_protected:Nn \graph_gset_transitive_closure:NNNn {
+  \__graph_set_transitive_closure:NNNnn #1 #2 #3 {#4} {g}
+}
+\cs_new_protected:Nn \__graph_set_transitive_closure:NNNnn {
   % #1: target
   % #2: source
   % #3: combination function with argspec :nnn
   % #4: default 'old' value
-  {
-    \use:c{graph_#5set_eq:NN} #1 #2
-    
-    \cs_set:Nn \__graph_edge_combinator:nnn
-      { \exp_not:n { #3 {##1} {##2} {##3} } }
-    \cs_generate_variant:Nn \__graph_edge_combinator:nnn {VVV}
-    
+  \use:c{graph_#5set_eq:NN} #1 #2
+  
+  \cs_set:Nn \__graph_edge_combinator:nnn {
+    \exp_not:n { #3 {##1} {##2} {##3} } }
+  \cs_generate_variant:Nn \__graph_edge_combinator:nnn {VVV}
+  
+  \graph_map_vertices_inline:Nn #2 {
     \graph_map_vertices_inline:Nn #2 {
-      \graph_map_vertices_inline:Nn #2 {
-        \graph_get_edge:NnnNT #2 {##1} {####1} \l__graph_edge_value_i_tl {
-          \graph_map_vertices_inline:Nn #2 {
-            \graph_get_edge:NnnNT #2 {####1} {########1}
-                \l__graph_edge_value_ii_tl {
-              \graph_get_edge:NnnNF #1 {##1} {########1}
-                  \l__graph_edge_value_old_tl
-                { \tl_set:Nn \l__graph_edge_value_old_tl {#4} }
-              \exp_args:NNx \tl_set:No \l__graph_edge_value_new_tl {
-                \__graph_edge_combinator:VVV
-                  \l__graph_edge_value_i_tl
-                  \l__graph_edge_value_ii_tl
-                  \l__graph_edge_value_old_tl
-              }
-              \use:c{graph_#5put_edge:NnnV} #1 {##1} {########1}
-                  \l__graph_edge_value_new_tl
+      \graph_get_edge:NnnNT #2 {##1} {####1}
+          \l__graph_edge_value_i_tl {
+        \graph_map_vertices_inline:Nn #2 {
+          \graph_get_edge:NnnNT #2 {####1} {########1}
+              \l__graph_edge_value_ii_tl {
+            \graph_get_edge:NnnNF #1 {##1} {########1}
+                \l__graph_edge_value_old_tl {
+              \tl_set:Nn \l__graph_edge_value_old_tl {#4}
             }
-          }
-        }
-      }
-    }
-  }
+            \exp_args:NNx \tl_set:No \l__graph_edge_value_new_tl {
+              \__graph_edge_combinator:VVV
+                \l__graph_edge_value_i_tl
+                \l__graph_edge_value_ii_tl
+                \l__graph_edge_value_old_tl
+            }
+            \use:c{graph_#5put_edge:NnnV} #1 {##1} {########1}
+                \l__graph_edge_value_new_tl
+} } } } } }
 \cs_generate_variant:Nn \graph_put_edge:Nnnn  {NnnV}
 \cs_generate_variant:Nn \graph_gput_edge:Nnnn {NnnV}
 \cs_generate_variant:Nn \tl_to_str:n          {o}
@@ -1464,30 +1430,26 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Assume that graph |#2| contains no cycles, and set graph |#1| to its transitive reduction.
+%  Assume that graph |#2| contains no cycles, and
+%  set graph |#1| to its transitive reduction.
 %
 %    \begin{macrocode}
-\cs_new_protected:Nn \graph_set_transitive_reduction:NN
-  { \__graph_set_transitive_reduction:NNn #1 #2 { } }
-\cs_new_protected:Nn \graph_gset_transitive_reduction:NN
-  { \__graph_set_transitive_reduction:NNn #1 #2 {g} }
-\cs_new_protected:Nn \__graph_set_transitive_reduction:NNn
+\cs_new_protected:Nn \graph_set_transitive_reduction:NN {
+  \__graph_set_transitive_reduction:NNn #1 #2 { } }
+\cs_new_protected:Nn \graph_gset_transitive_reduction:NN {
+  \__graph_set_transitive_reduction:NNn #1 #2 {g} }
+\cs_new_protected:Nn \__graph_set_transitive_reduction:NNn {
   % #1: target
   % #2: source
-  {
-    \use:c{graph_#3set_eq:NN} #1 #2
+  \use:c{graph_#3set_eq:NN} #1 #2
+  \graph_map_vertices_inline:Nn #2 {
     \graph_map_vertices_inline:Nn #2 {
-      \graph_map_vertices_inline:Nn #2 {
-        \graph_get_edge:NnnNT #2 {##1} {####1} \l_tmpa_tl {
-          \graph_map_vertices_inline:Nn #2 {
-            \graph_get_edge:NnnNT #2 {####1} {########1} \l_tmpa_tl {
-              \use:c{graph_#3remove_edge:Nnn} #1 {##1} {########1}
-            }
-          }
-        }
-      }
-    }
-  }
+      \graph_get_edge:NnnNT #2 {##1} {####1} \l_tmpa_tl {
+        \graph_map_vertices_inline:Nn #2 {
+          \graph_get_edge:NnnNT #2 {####1} {########1} \l_tmpa_tl {
+            \use:c{graph_#3remove_edge:Nnn} #1 {##1} {########1}
+  } } } } }
+}
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1502,23 +1464,21 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  If the |display| option was given, we define some additional
+%  We define some additional
 %  functions that can display the graph in table-form.
-%
-%    \begin{macrocode}
-\bool_if:NT \__graph_format_bool {
-%    \end{macrocode}
-%
 %  This is the option-less version, which delegates
-%  to the full version of the function:
+%  to the full version:
 %
 %    \begin{macrocode}
-\cs_new_protected:Nn \graph_display_table:N
-  { \graph_display_table:Nn #1 {} }
+\cs_new_protected:Nn \graph_display_table:N {
+  \graph_display_table:Nn #1 {} }
 %    \end{macrocode}
 %
 %  The full version has a second argument accepting options
-%  that determine table formatting. We first define those options:
+%  that determine table formatting. We first define those options.
+%  Please note that with the standard options, the |xcolor| package
+%  is required with the |table| option, because of our use of the
+%  |\cellcolor| command.
 %
 %    \begin{macrocode}
 \keys_define:nn {lt3graph-display} {
@@ -1667,7 +1627,8 @@
 %  We are finished with this row; go on to the next iteration:
 %
 %    \begin{macrocode}
-    \tl_put_right:Nx \l__graph_table_content_tl { \seq_use:Nn \l__graph_row_seq {&} }
+    \tl_put_right:Nx \l__graph_table_content_tl
+        { \seq_use:Nn \l__graph_row_seq {&} }
     \tl_put_right:Nn \l__graph_table_content_tl {\\\hline}
 %    \end{macrocode}
 %    \uninteresting\begin{macrocode}
@@ -1696,9 +1657,6 @@
 \tl_new:N \l__graph_cell_content_tl
 \bool_new:N \l__graph_table_skipfirst_bool
 \seq_new:N \l__graph_row_seq
-%    \end{macrocode}
-%    \uninteresting\begin{macrocode}
-}
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
