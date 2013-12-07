@@ -61,12 +61,18 @@
 % File Info                                                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\def\extratitlenote{}
+
 \GetFileInfo{\packagename.sty}
 
-\title{The \textsf{\packagename} package\thanks{%
-  This document corresponds to \textsf{\packagename}~\fileversion,
-  dated \filedate.%
-}}
+\title{
+  The \textsf{\packagename} package\thanks{%
+    This document corresponds to
+    \textsf{\packagename}~\fileversion,
+    dated \filedate.
+  }
+  \ifdefempty{\extratitlenote}{}{\thanks{\extratitlenote}}
+}
 
 \author{
   Michiel Helvensteijn\\
@@ -186,6 +192,7 @@
     \ttfamily\small%
     \countlinesinfile{#1}{\countedlines}%
     \setlength{\packagedoc@spacetoreserve}{\countedlines\baselineskip}%
+    \setlength{\packagedoc@spacetoreserve}{1.7\packagedoc@spacetoreserve}%
     \addtolength{\packagedoc@spacetoreserve}{-4bp}%
     \needspace{\packagedoc@spacetoreserve}%
   }%
@@ -196,7 +203,6 @@
   #2%
   \addvspace{4bp}%
 }
-
 \NoIndentAfterEnv{latex-example}
 
 %%% DRYer WITH output but WITHOUT side-effects
@@ -207,6 +213,7 @@
     \ttfamily\small%
     \countlinesinfile{#1}{\countedlines}%
     \setlength{\packagedoc@spacetoreserve}{\countedlines\baselineskip}%
+    \setlength{\packagedoc@spacetoreserve}{1.7\packagedoc@spacetoreserve}%
     \addtolength{\packagedoc@spacetoreserve}{\baselineskip}%
     \needspace{\packagedoc@spacetoreserve}%
   }%
@@ -219,7 +226,6 @@
   \end{exampleoutputframe}%
   \addvspace{4bp}%
 }
-
 \NoIndentAfterEnv{latex-example-show}
 
 
