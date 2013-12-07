@@ -1,6 +1,11 @@
-LaTeX Package : l3graph 0.1.0
+latex-l3graph
+=============
 
-Last Modified : 2013-10-08
+a graph datastructure for the LaTeX3 programming environment
+
+LaTeX Package : l3graph 0.9.0
+
+Last Modified : 2013-12-07
 
 Author        : Michiel Helvensteijn  (www.mhelvens.net)
 
