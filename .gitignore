@@ -43,3 +43,4 @@ build/*
 *.vrb
 *.xdy
 *.tdo
+/build

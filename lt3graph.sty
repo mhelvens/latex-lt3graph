@@ -346,8 +346,8 @@
     \graph_get_vertex:NnNT #1 {#2} \l_tmpa_tl {
       %%% initialize degree to 0
       %
-      \use:c{prop_#4put:cnn} {\__graph_tl:nnn{graph}{#1}{indegree}}  {#2}{0}
-      \use:c{prop_#4put:cnn} {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2}{0}
+      \use:c{prop_#4put:cnn} {\__graph_tl:nnn{graph}{#1}{indegree}}  {#2} {0}
+      \use:c{prop_#4put:cnn} {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2} {0}
     }
   }
 \tl_new:N \l__graph_vertex_data_tl
@@ -559,8 +559,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Test whether a vertex |#2| exists. If so, its value is
-%  stored in |#3| and |T| is left in the input stream. If it
-%  doesn't, |F| is left in the input stream.
+%  stored in |#3| and |T| is left in the input stream. If
+%  it doesn't, |F| is left in the input stream.
 %
 %    \begin{macrocode}
 \prg_new_protected_conditional:Nnn \graph_get_vertex:NnN
@@ -656,9 +656,9 @@
 \cs_new:Npn \graph_if_vertex_can_reach_cycle:NnTF #1#2
   { \__graph_if_vertex_can_reach_cycle:NnnTF #1 {#2} {\__graph_empty_set} }
 \cs_new:Npn \graph_if_vertex_can_reach_cycle:NnT #1#2
-  { \__graph_if_vertex_can_reach_cycle:NnnT #1 {#2} {\__graph_empty_set} }
+  { \__graph_if_vertex_can_reach_cycle:NnnT  #1 {#2} {\__graph_empty_set} }
 \cs_new:Npn \graph_if_vertex_can_reach_cycle:NnF #1#2
-  { \__graph_if_vertex_can_reach_cycle:NnnF #1 {#2} {\__graph_empty_set} }
+  { \__graph_if_vertex_can_reach_cycle:NnnF  #1 {#2} {\__graph_empty_set} }
 
 \prg_new_conditional:Nnn \__graph_if_vertex_can_reach_cycle:Nnn
   {p, T, F, TF}
@@ -1270,6 +1270,7 @@
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \graph_map_topological_order_tokens:Nn {
+  
   %%% Fill \l__graph_source_vertices with source-nodes and count indegrees
   %
   \prop_clear:N \l__graph_source_vertices
