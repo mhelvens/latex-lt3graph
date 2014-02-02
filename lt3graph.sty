@@ -48,7 +48,7 @@
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \RequirePackage{expl3}
-\ProvidesExplPackage{lt3graph}{2013/12/05}{0.0.9-r1}
+\ProvidesExplPackage{lt3graph}{2013/12/05}{0.0.9-r2}
   {a LaTeX3 datastructure for representing directed graphs with data}
 %    \end{macrocode}
 %
@@ -163,8 +163,8 @@
   { \seq_map_inline:Nn \g__graph_prop_data_types_seq {#1} }
 \seq_new:N               \g__graph_prop_data_types_seq
 \seq_set_from_clist:Nn   \g__graph_prop_data_types_seq
-  {vertices, edge-values, edge-froms, edge-tos, edge-triples,
-   indegree, outdegree}
+  {vertices, edge-values, edge-froms, edge-tos,
+   edge-triples, indegree, outdegree}
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -719,6 +719,41 @@
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %
+% %  Test whether graph |#1| contains any cycles:
+% %
+% %    \begin{macrocode}
+% \prg_new_protected_conditional:Nnn \graph_get_cycle:NN
+%   {T, F, TF}
+%   % #1: graph id
+%   % #2: l3seq variable to put the cycle description in
+%   {
+%     \seq_clear:N #2
+%     \__graph_get_cycle:NNTF #1 #2
+%       {\prg_return_true: }
+%       {\prg_return_false:}
+%   }
+% 
+% \prg_new_protected_conditional:Nnn \__graph_get_cycle:NN
+%   {T, F, TF}
+%   % #1: graph id
+%   % #2: l3seq variable
+%   {
+%     \graph_map_successors_inline:Nnn #1 {} {
+%       \seq_if_in:NnTF #2 {##1} {
+%         % TODO
+%       }{
+%         % TODO
+%       }
+%     }
+%   }
+% %    \end{macrocode}
+% %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 

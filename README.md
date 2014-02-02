@@ -1,7 +1,7 @@
 latex-lt3graph
 =============
 
-LaTeX Package : lt3graph 0.0.9-r1
+LaTeX Package : lt3graph 0.0.9-r2
 
 Last Modified : 2013-12-07
 
