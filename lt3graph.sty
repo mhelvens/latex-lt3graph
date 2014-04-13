@@ -198,6 +198,13 @@
     \tl_set:cn    {##1} {#2}
   }
 }
+\cs_new_protected:Nn \__graph_ptr_gnew:Nn {
+  \withargs [\uniquecsname] {
+    \tl_gset:Nn #1 {##1}
+    \tl_new:c     {##1}
+    \tl_gset:cn    {##1} {#2}
+  }
+}
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -336,7 +343,7 @@
   {
     %%% create pointer to value
     %
-    \__graph_ptr_new:Nn \l__graph_vertex_data_tl {#3}
+    \use:c {__graph_ptr_#4new:Nn} \l__graph_vertex_data_tl {#3}
 
     %%% add the vertex
     %
@@ -401,7 +408,7 @@
             { \__graph_tl:nnn{graph}{#1}{edge-tos}     }
             { \__graph_key:nn{#2}{#3}                  }
             { \tl_to_str:n{#3}                         }
-          \__graph_ptr_new:Nn \l__graph_edge_data_tl {#4}
+          \use:c{__graph_ptr_#5new:Nn} \l__graph_edge_data_tl {#4}
           \use:c{prop_#5put:coV}
             { \__graph_tl:nnn{graph}{#1}{edge-values}  }
             { \__graph_key:nn{#2}{#3}                  }
