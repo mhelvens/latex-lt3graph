@@ -48,7 +48,7 @@
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \RequirePackage{expl3}
-\ProvidesExplPackage{lt3graph}{2013/12/05}{0.0.9-r2}
+\ProvidesExplPackage{lt3graph}{2014/04/14}{0.1.1}
   {a LaTeX3 datastructure for representing directed graphs with data}
 %    \end{macrocode}
 %
@@ -545,7 +545,7 @@
     \graph_map_edges_inline:Nn #2 {
       \graph_if_vertex_exist:NnT #1 {##1} {
         \graph_if_vertex_exist:NnT #1 {##2} {
-          \graph_gput_edge:Nnnn #1 {##1} {##2} {##3}
+          \use:c{graph_#3put_edge:Nnnn} #1 {##1} {##2} {##3}
         }
       }
     }
