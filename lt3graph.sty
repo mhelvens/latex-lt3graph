@@ -48,7 +48,7 @@
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \RequirePackage{expl3}
-\ProvidesExplPackage{lt3graph}{2014/04/14}{0.1.1}
+\ProvidesExplPackage{lt3graph}{2014/04/14}{0.1.2}
   {a LaTeX3 datastructure for representing directed graphs with data}
 %    \end{macrocode}
 %
@@ -1315,37 +1315,44 @@
   
   %%% Fill \l__graph_source_vertices with source-nodes and count indegrees
   %
-  \prop_clear:N \l__graph_source_vertices
+  \prop_gclear_new:c {l__graph_source_vertices_(\int_use:N\g__graph_nesting_depth_int)_prop}
+  \prop_gclear_new:c {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop}
   \graph_map_vertices_inline:Nn #1 {
-    \prop_put:Nnf \l__graph_tmp_indeg_int {##1}
+    \prop_put:cnf {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##1}
         { \graph_get_indegree:Nn #1 {##1} }
     \int_compare:nT {\graph_get_indegree:Nn #1 {##1} = 0} {
-      \prop_put:Nnn \l__graph_source_vertices {##1} {} 
+      \prop_put:cnn {l__graph_source_vertices_(\int_use:N\g__graph_nesting_depth_int)_prop} {##1} {} 
   } }
   
   %%% Main loop
   %
-  \bool_until_do:nn {\prop_if_empty_p:N \l__graph_source_vertices} {
+  \bool_until_do:nn {\prop_if_empty_p:c {l__graph_source_vertices_(\int_use:N\g__graph_nesting_depth_int)_prop}} {
     %%% Choose any vertex (\l__graph_topo_key_tl, \l__graph_topo_value_tl)
     %
-    \__graph_prop_any_key_pop:NN
-        \l__graph_source_vertices
+    \__graph_prop_any_key_pop:cN
+        {l__graph_source_vertices_(\int_use:N\g__graph_nesting_depth_int)_prop}
         \l__graph_topo_key_tl
     \graph_get_vertex:NVNT #1 \l__graph_topo_key_tl \l__graph_topo_val_tl {
-      %%% Run the mapping funtion on the key and value from that vertex
-      %
-      \withargs:VVn \l__graph_topo_key_tl \l__graph_topo_val_tl
-        { #2 {##1} {##2} }
       
       %%% Deduct one from the counter of all affected nodes
-      %%% and add all now-empty vertices to \l__graph_source_vertices
+      %%% and add all now-empty vertices to source_vertices
       %
       \graph_map_outgoing_edges_inline:NVn #1 \l__graph_topo_key_tl {
-        \prop_put:Nnf \l__graph_tmp_indeg_int {##2}
-          {\int_eval:n {\prop_get:Nn \l__graph_tmp_indeg_int {##2} - 1}}
-        \int_compare:nT {\prop_get:Nn \l__graph_tmp_indeg_int {##2} = 0} {
-          \prop_put:Nnn \l__graph_source_vertices {##2} {}
-} } } } }
+        \prop_put:cnf {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2}
+          {\int_eval:n {\prop_get:cn {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} - 1}}
+        \int_compare:nT {\prop_get:cn {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} = 0} {
+          \prop_put:cnn {l__graph_source_vertices_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} {}
+      } }
+      
+      %%% Run the mapping funtion on the key and value from that vertex
+      %%% and manage the nesting depth counter
+      %
+      \int_gincr:N \g__graph_nesting_depth_int
+      \withargs:VVn \l__graph_topo_key_tl \l__graph_topo_val_tl
+        { #2 {##1} {##2} }
+      \int_gdecr:N \g__graph_nesting_depth_int
+    }
+} }
 \cs_new_protected:Nn \__graph_prop_any_key_pop:NN {
   \prop_map_inline:Nn #1 {
     \tl_set:Nn #2 {##1}
@@ -1354,14 +1361,14 @@
   }
   \tl_set:Nn #2 {\q_no_value} % TODO: test
 }
+\cs_generate_variant:Nn \__graph_prop_any_key_pop:NN         {cN}
 \cs_generate_variant:Nn \withargs:nnn                        {VVn}
 \cs_generate_variant:Nn \graph_map_outgoing_edges_inline:Nnn {NVn}
-\cs_generate_variant:Nn \prop_put:Nnn                        {Nnf}
+\cs_generate_variant:Nn \prop_put:Nnn                        {cnf}
 \cs_generate_variant:Nn \graph_get_vertex:NnNT               {NVNT}
-\prop_new:N \l__graph_source_vertices
-\prop_new:N \l__graph_tmp_indeg_int
 \tl_new:N \l__graph_topo_key_tl
 \tl_new:N \l__graph_topo_val_tl
+\int_new:N \g__graph_nesting_depth_int
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
