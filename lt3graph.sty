@@ -48,7 +48,7 @@
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \RequirePackage{expl3}
-\ProvidesExplPackage{lt3graph}{2014/04/14}{0.1.2}
+\ProvidesExplPackage{lt3graph}{2014/04/21}{0.1.3}
   {a LaTeX3 datastructure for representing directed graphs with data}
 %    \end{macrocode}
 %
@@ -201,7 +201,7 @@
 \cs_new_protected:Nn \__graph_ptr_gnew:Nn {
   \withargs [\uniquecsname] {
     \tl_gset:Nn #1 {##1}
-    \tl_new:c     {##1}
+    \tl_new:c      {##1}
     \tl_gset:cn    {##1} {#2}
   }
 }
@@ -228,6 +228,7 @@
   }{
     \tl_new:N #1
     \tl_set:Nf #1 { \tl_trim_spaces:f {\str_tail:n{#1}} }
+    \int_new:c {\__graph_tl:nnn{graph}{#1}{vertex-count}}
     \__graph_for_each_prop_datatype:n
       { \prop_new:c {\__graph_tl:nnn{graph}{#1}{##1}} }
   }
@@ -343,13 +344,17 @@
   {
     %%% create pointer to value
     %
-    \use:c {__graph_ptr_#4new:Nn} \l__graph_vertex_data_tl {#3}
+    \use:c{__graph_ptr_#4new:Nn} \l__graph_vertex_data_tl {#3}
 
     %%% add the vertex
     %
-    \use:c {prop_#4put:cnV} {\__graph_tl:nnn{graph}{#1}{vertices}}
+    \use:c{prop_#4put:cnV} {\__graph_tl:nnn{graph}{#1}{vertices}}
         {#2} \l__graph_vertex_data_tl
 
+    %%% increment the vertex counter
+    %
+    \use:c{int_#4incr:c}  {\__graph_tl:nnn{graph}{#1}{vertex-count}}
+    
     \graph_get_vertex:NnNT #1 {#2} \l_tmpa_tl {
       %%% initialize degree to 0
       %
@@ -464,9 +469,13 @@
       
       %%% remove the vertex
       %
-      \use{prop_#3remove:cn} {\__graph_tl:nnn{graph}{#1}{vertices}}  {#2}
-      \use{prop_#3remove:cn} {\__graph_tl:nnn{graph}{#1}{indegree}}  {#2}
-      \use{prop_#3remove:cn} {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2}
+      \use:c{prop_#3remove:cn} {\__graph_tl:nnn{graph}{#1}{vertices}}  {#2}
+      \use:c{prop_#3remove:cn} {\__graph_tl:nnn{graph}{#1}{indegree}}  {#2}
+      \use:c{prop_#3remove:cn} {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2}
+      
+      %%% decrement the vertex counter
+      %
+      \use:c{int_#3decr:c} {\__graph_tl:nnn{graph}{#1}{vertex-count}}
     }
   }
 \cs_generate_variant:Nn \prop_put:Nnn {cnV}
@@ -804,6 +813,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \subsection{Querying Information}                                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Get the number of vertices in the graph:
+%
+%    \begin{macrocode}
+\cs_new:Nn \graph_vertex_count:N {
+  \int_use:c {\__graph_tl:nnn{graph}{#1}{vertex-count}}
+}
+%    \end{macrocode}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
