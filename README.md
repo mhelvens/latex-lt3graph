@@ -1,9 +1,9 @@
 latex-lt3graph
 =============
 
-LaTeX Package : lt3graph 0.1.3
+LaTeX Package : lt3graph 0.1.4
 
-Last Modified : 2014-04-21
+Last Modified : 2014-08-31
 
 Author        : Michiel Helvensteijn  (www.mhelvens.net)
 
@@ -19,15 +19,10 @@ Prerequisites
 
 To use this package, you need the following packages:
 
-*  `l3candidates`
-*  `l3clist`
-*  `l3msg`
-*  `l3prg`
-*  `l3prop`
 *  `xparse`
 *  `withargs`
 
-The following package is optional, loaded only when the package
+The following package is optional, loaded only when lt3graph
 is loaded with the 'display' option, for displaying graph info
 in a table:
 

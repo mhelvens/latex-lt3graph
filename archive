@@ -11,7 +11,7 @@ FILES="$DOC.sty         \
        $DOC-packagedoc.cls  \
        README.md"
 
-VERSION=0.1.3
+VERSION=0.1.4
 
 ##################################################
 #
@@ -27,7 +27,7 @@ mv README.md README
 
 ### Zero out the checksum value
 #
-sed -r -i.bak 's/\\CheckSum\{[0-9]*\}/\\CheckSum\{0\}/;' $DOC.sty
+sed -r -i 's/\\CheckSum\{[0-9]*\}/\\CheckSum\{0\}/;' $DOC.sty
 
 ### First compilation
 #
