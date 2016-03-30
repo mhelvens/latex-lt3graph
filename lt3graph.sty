@@ -386,14 +386,14 @@
           %
           \use:c{prop_#5put:cnf} {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2}
             {\int_eval:n {
-                \prop_get:cn {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2} + 1
+                \prop_item:cn {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2} + 1
             }}
           
           %%% increment incoming degree of vertex #3
           %
           \use:c{prop_#5put:cnf} {\__graph_tl:nnn{graph}{#1}{indegree}} {#3}
             {\int_eval:n {
-                \prop_get:cn {\__graph_tl:nnn{graph}{#1}{indegree}} {#3} + 1
+                \prop_item:cn {\__graph_tl:nnn{graph}{#1}{indegree}} {#3} + 1
             }}
         }
         
@@ -496,14 +496,14 @@
     %
     \use:c{prop_#4put:cnf} {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2}
       {\int_eval:n {
-          \prop_get:cn {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2} - 1
+          \prop_item:cn {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2} - 1
       }}
     
     %%% decrement indegree of vertex #3
     %
     \use:c{prop_#4put:cnf} {\__graph_tl:nnn{graph}{#1}{indegree}} {#3}
       {\int_eval:n {
-          \prop_get:cn {\__graph_tl:nnn{graph}{#1}{indegree}} {#3} - 1
+          \prop_item:cn {\__graph_tl:nnn{graph}{#1}{indegree}} {#3} - 1
       }}
     
     %%% actually remove edge
@@ -831,7 +831,7 @@
 %
 %    \begin{macrocode}
 \cs_new:Nn \graph_get_outdegree:Nn {
-  \prop_get:cn {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2}
+  \prop_item:cn {\__graph_tl:nnn{graph}{#1}{outdegree}} {#2}
 }
 %    \end{macrocode}
 %
@@ -845,7 +845,7 @@
 %
 %    \begin{macrocode}
 \cs_new:Nn \graph_get_indegree:Nn {
-  \prop_get:cn {\__graph_tl:nnn{graph}{#1}{indegree}} {#2}
+  \prop_item:cn {\__graph_tl:nnn{graph}{#1}{indegree}} {#2}
 }
 %    \end{macrocode}
 %
@@ -1357,8 +1357,8 @@
       %
       \graph_map_outgoing_edges_inline:NVn #1 \l__graph_topo_key_tl {
         \prop_put:cnf {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2}
-          {\int_eval:n {\prop_get:cn {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} - 1}}
-        \int_compare:nT {\prop_get:cn {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} = 0} {
+          {\int_eval:n {\prop_item:cn {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} - 1}}
+        \int_compare:nT {\prop_item:cn {l__graph_tmp_indeg_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} = 0} {
           \prop_put:cnn {l__graph_source_vertices_(\int_use:N\g__graph_nesting_depth_int)_prop} {##2} {}
       } }
       
