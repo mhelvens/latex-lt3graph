@@ -110,6 +110,7 @@
     alsoletter={_,:},
     moretexcs={ExplSyntaxOn,ExplSyntaxOff,lstinputlisting,detokenize,#1}
   }
+  \lstMakeShortInline[style=examplecode]|
 }
 
 %%% Code formatting
@@ -265,7 +266,7 @@
   \vskip-1.05\abovedisplayskip%
 }
 
-\BeforeBeginEnvironment{macrocode}{\vskip.2\abovedisplayskip}
+\BeforeBeginEnvironment{macrocode}{\lstDeleteShortInline|\vskip.2\abovedisplayskip}
 
 %%% Actually surround 'macrocode' with the frame
 %
@@ -284,7 +285,7 @@
 %%% always go back to it after one code block
 %
 \interesting
-\AfterEndEnvironment{macrocode}{\vskip\belowdisplayskip\interesting\NoIndentAfterThis}
+\AfterEndEnvironment{macrocode}{\lstMakeShortInline[style=examplecode]|\vskip\belowdisplayskip\interesting\NoIndentAfterThis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Argument Specifiers and such                                                 %

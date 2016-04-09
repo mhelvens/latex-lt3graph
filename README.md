@@ -1,9 +1,9 @@
 latex-lt3graph
 =============
 
-LaTeX Package : lt3graph 0.1.4
+LaTeX Package : lt3graph 0.1.5
 
-Last Modified : 2014-08-31
+Last Modified : 2016-03-30
 
 Author        : Michiel Helvensteijn  (www.mhelvens.net)
 
