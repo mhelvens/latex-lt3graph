@@ -1560,31 +1560,31 @@
   
   row_keys_format      .tl_set:N  = \l__graph_format_row_keys_tl,
   row_keys_format      .initial:n = \textbf,
-  row_keys_format      .value_required:,
+  row_keys_format      .value_required:n = true,
   
   col_keys_format      .tl_set:N  = \l__graph_format_col_keys_tl,
   col_keys_format      .initial:n = \textbf,
-  col_keys_format      .value_required:,
+  col_keys_format      .value_required:n = true,
   
   vertex_vals_format   .tl_set:N  = \l__graph_format_vertex_vals_tl,
   vertex_vals_format   .initial:n = \use:n,
-  vertex_vals_format   .value_required:,
+  vertex_vals_format   .value_required:n = true,
   
   edge_vals_format     .tl_set:N  = \l__graph_format_edge_vals_tl,
   edge_vals_format     .initial:n = \use:n,
-  edge_vals_format     .value_required:,
+  edge_vals_format     .value_required:n = true,
   
   edge_diagonal_format .tl_set:N  = \l__graph_format_edge_diagonal_tl,
   edge_diagonal_format .initial:n = \cellcolor{black!30!white},
-  edge_diagonal_format .value_required:,
+  edge_diagonal_format .value_required:n = true,
   
   edge_direct_format   .tl_set:N  = \l__graph_format_edge_direct_tl,
   edge_direct_format   .initial:n = \cellcolor{green},
-  edge_direct_format   .value_required:,
+  edge_direct_format   .value_required:n = true,
   
   edge_transitive_format .tl_set:N  = \l__graph_format_edge_transitive_tl,
   edge_transitive_format .initial:n = \cellcolor{green!40!yellow}\tiny(tr),
-  edge_transitive_format .value_required:,
+  edge_transitive_format .value_required:n = true,
   
   edge_none_format     .tl_set:N  = \l__graph_format_edge_none_tl,
   edge_none_format     .initial:n = {},
