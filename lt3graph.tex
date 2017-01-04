@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \iffalse %%%%
 %                                                                              %
-%  Copyright (c) 2014 - Michiel Helvensteijn   (www.mhelvens.net)              %
+%  Copyright (c) 2017 - Michiel Helvensteijn   (www.mhelvens.net)              %
 %                                                                              %
 %  https://github.com/mhelvens/latex-lt3graph                                  %
 %                                                                              %
@@ -103,6 +103,9 @@
   {no longer loading individual l3kernel packages, which leads to
    an error for recent versions of expl3}
 
+\changes{0.1.6}{2017/01/04}
+  {tracking changes in expl3}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}                                                               %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,7 +121,7 @@ connect them.\footnote
 	{ Mathematically speaking, a directed graph is a tuple
 	  \( (V, E) \) with a set of vertices \( V \) and a set of edges
 	  \( E \subseteq V \times V \) connecting those vertices. }
-One such a graph is defined below:
+One such graph is defined below:
 
 \begin{latex-example}
 \ExplSyntaxOn
@@ -161,7 +164,7 @@ We could then, for example, use TikZ to draw this graph:
 
 Just to be clear, this library is \emph{not about drawing} graphs.
 It does not, inherently, understand any TikZ.
-It is about \emph{representing} graphs. This allows us do perform analysis
+It is about \emph{representing} graphs. This allows us to perform analysis
 on their structure. We could, for example, determine if there is
 a cycle in the graph:
 
