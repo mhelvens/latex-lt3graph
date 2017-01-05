@@ -1,7 +1,7 @@
 latex-lt3graph
 =============
 
-LaTeX Package : lt3graph 0.1.7
+LaTeX Package : lt3graph 0.1.8
 
 Last Modified : 2017-01-05
 
@@ -56,5 +56,5 @@ License
 -------
 
 This material is subject to the LaTeX Project Public License. See
-http://www.ctan.org/tex-archive/help/Catalogue/licenses.lppl.html 
+http://mirror.ctan.org/help/Catalogue/Licenses.lppl.html
 for the details of that license.
