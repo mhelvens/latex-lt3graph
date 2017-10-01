@@ -48,7 +48,7 @@
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \RequirePackage{expl3}
-\ProvidesExplPackage{lt3graph}{2017/01/05}{0.1.8}
+\ProvidesExplPackage{lt3graph}{2017/09/20}{0.1.9}
   {a LaTeX3 datastructure for representing directed graphs with data}
 %    \end{macrocode}
 %
@@ -1226,7 +1226,7 @@
   % #6: ptr to edge value (not used)
   \str_if_eq:nnT {#2} {#4} {
     \__graph_map_successors_tokens_aux:nnv
-        {#3} {#5} {\prop_get:cn{\__graph_tl:nnn{graph}{#1}{vertices}}{#5}}
+        {#3} {#5} {\prop_item:cn{\__graph_tl:nnn{graph}{#1}{vertices}}{#5}}
   }
 }
 \cs_new:Nn \__graph_map_successors_tokens_aux:nnn {
@@ -1275,7 +1275,7 @@
   % #6: ptr to edge value (not used)
   \str_if_eq:nnT {#2} {#4} {
     \__graph_map_successors_function_aux:Nnv
-        #3 {#5} {\prop_get:cn{\__graph_tl:nnn{graph}{#1}{vertices}}{#5}}
+        #3 {#5} {\prop_item:cn{\__graph_tl:nnn{graph}{#1}{vertices}}{#5}}
   }
 }
 \cs_new:Nn \__graph_map_successors_function_aux:Nnn {
